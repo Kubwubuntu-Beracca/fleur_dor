@@ -11,20 +11,22 @@ class ProductsGrid extends StatelessWidget {
     final loadedData = Provider.of<ProductsProvider>(context);
     final products = loadedData.items;
     return GridView.builder(
-      shrinkWrap: true,
-      physics: const ScrollPhysics(),
-      padding: const EdgeInsets.all(10.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 2 / 3,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10),
-      itemCount: products.length,
-      itemBuilder: (ctx, i) => ItemWidget(
-        products[i].id,
-        products[i].price,
-        products[i].imageUrl,
-      ),
-    );
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
+        padding: const EdgeInsets.all(10.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 2 / 3,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10),
+        itemCount: products.length,
+        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+              value: products[i],
+              child: ItemWidget(
+                  // products[i].id,
+                  // products[i].price,
+                  // products[i].imageUrl,
+                  ),
+            ));
   }
 }

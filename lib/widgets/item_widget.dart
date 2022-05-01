@@ -1,20 +1,14 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:fleur_d_or/providers/product.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ItemWidget extends StatelessWidget {
-  const ItemWidget(
-    this.id,
-    this.price,
-    this.imageUrl,
-  );
-  final String id;
-  final String? price;
-  final String? imageUrl;
-
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
     return Stack(
       children: <Widget>[
         ClipRRect(
@@ -22,11 +16,11 @@ class ItemWidget extends StatelessWidget {
           child: GridTile(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .pushNamed(ProductDetailScreen.routeName, arguments: id);
+                Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                    arguments: product.id);
               },
               child: Image.network(
-                imageUrl!,
+                product.imageUrl!,
                 fit: BoxFit.cover,
               ),
             ),
@@ -34,7 +28,7 @@ class ItemWidget extends StatelessWidget {
               backgroundColor: Colors.white,
               leading: FittedBox(
                 child: Text(
-                  '${price!} Fbu',
+                  '${product.price!} Fbu',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
@@ -66,9 +60,11 @@ class ItemWidget extends StatelessWidget {
               minWidth: 20,
             ),
             child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite_border,
+              onPressed: () {
+                product.toggleFavoriteStatus();
+              },
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: Colors.black,
               ),
             ),
