@@ -1,3 +1,4 @@
+import 'package:fleur_d_or/Screens/display_by_category.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
 import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) => ProductsProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primaryColor: Colors.white,
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
         home: ProductsOverView(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+          DisplayByCategory.routeName: (ctx) => DisplayByCategory(),
         },
       ),
     );

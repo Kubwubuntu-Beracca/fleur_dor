@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class ItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    final product = Provider.of<Product>(context, listen: false);
     return Stack(
       children: <Widget>[
         ClipRRect(
@@ -59,13 +59,16 @@ class ItemWidget extends StatelessWidget {
               minHeight: 20,
               minWidth: 20,
             ),
-            child: IconButton(
-              onPressed: () {
-                product.toggleFavoriteStatus();
-              },
-              icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: Colors.black,
+            child: Consumer<Product>(
+              //product is the value representing Product data
+              builder: (ctx, product, child) => IconButton(
+                onPressed: () {
+                  product.toggleFavoriteStatus();
+                },
+                icon: Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),

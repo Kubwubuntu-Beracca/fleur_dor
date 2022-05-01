@@ -1,4 +1,4 @@
-// ignore_for_file: unrelated_type_equality_checks
+// ignore_for_file: unrelated_type_equality_checks, use_key_in_widget_constructors
 
 import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:flutter/material.dart';

@@ -10,6 +10,7 @@ class ProductsProvider with ChangeNotifier {
       title: 'Bouquet Rose',
       description: 'Blooming blossoming',
       price: '100.000',
+      category: 'Anniversary',
       imageUrl:
           'https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
     ),
@@ -18,6 +19,7 @@ class ProductsProvider with ChangeNotifier {
       title: 'Amagaba',
       description: 'Flowering',
       price: '20.000',
+      category: 'Dot',
       imageUrl:
           'https://images.unsplash.com/photo-1529636798458-92182e662485?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80',
     ),
@@ -26,6 +28,7 @@ class ProductsProvider with ChangeNotifier {
       title: 'Icuhiro',
       description: 'flourishing',
       price: '30.000',
+      category: 'Mariage',
       imageUrl:
           'https://images.unsplash.com/photo-1576161954389-69cb769e0eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80',
     ),
@@ -34,6 +37,7 @@ class ProductsProvider with ChangeNotifier {
       title: 'Centre-Face',
       description: 'thriving',
       price: '30.000',
+      category: 'Anniversary',
       imageUrl:
           'https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
     ),
@@ -42,6 +46,7 @@ class ProductsProvider with ChangeNotifier {
       title: 'Simbimanga',
       description: 'Thriving in vigor',
       price: '40.000',
+      category: 'Dot',
       imageUrl:
           'https://images.unsplash.com/photo-1529636798458-92182e662485?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80',
     ),
@@ -50,6 +55,7 @@ class ProductsProvider with ChangeNotifier {
       title: 'table d honneur',
       description: 'health and beauty',
       price: '10.000',
+      category: 'Mariage',
       imageUrl:
           'https://images.unsplash.com/photo-1576161954389-69cb769e0eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80',
     )
@@ -59,7 +65,17 @@ class ProductsProvider with ChangeNotifier {
     return [..._items];
   }
 
+  List<Product> get favoriteItems {
+    return _items.where((prodItem) => prodItem.isFavorite).toList();
+  }
+
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
+  }
+
+  List<Product> findByCategory(String catgName) {
+    return _items.where((prod) {
+      return prod.category!.contains(catgName);
+    }).toList();
   }
 }
