@@ -1,7 +1,9 @@
 import 'package:fleur_d_or/Screens/cart_screen.dart';
 import 'package:fleur_d_or/Screens/display_by_category.dart';
+import 'package:fleur_d_or/Screens/orders_screen.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
 import 'package:fleur_d_or/providers/cart.dart';
+import 'package:fleur_d_or/providers/orders.dart';
 import 'package:fleur_d_or/providers/product.dart';
 import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => Orders(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -38,7 +43,8 @@ class MyApp extends StatelessWidget {
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           DisplayByCategory.routeName: (ctx) => DisplayByCategory(),
-          CartScreen.routeName: (ctx) => CartScreen()
+          CartScreen.routeName: (ctx) => CartScreen(),
+          OrderScreen.routeName: (ctx) => OrderScreen(),
         },
       ),
     );

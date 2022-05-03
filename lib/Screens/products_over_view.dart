@@ -1,12 +1,14 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable, sized_box_for_whitespace, constant_identifier_names
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:fleur_d_or/Screens/cart_screen.dart';
-import 'package:fleur_d_or/data/url_silde_images.dart';
-import 'package:fleur_d_or/providers/cart.dart';
-import 'package:fleur_d_or/widgets/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../Screens/cart_screen.dart';
+import '../data/url_silde_images.dart';
+import '../providers/cart.dart';
+import '../widgets/app_drawer.dart';
+import '../widgets/badge.dart';
 import '../data/categories.dart';
 import '../widgets/category_widget.dart';
 import '../widgets/products_grid.dart';
@@ -30,17 +32,6 @@ class _ProductsOverViewState extends State<ProductsOverView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
-        leading: IconButton(
-          onPressed: () {
-            //showSearch(
-            //context: context,
-            //delegate: CustomSearchDelegate(),
-            // );
-          },
-          icon: const Icon(
-            Icons.menu,
-          ),
-        ),
         title: const Text(
           'Fleur Dor',
           style: TextStyle(color: Colors.black),
@@ -85,6 +76,7 @@ class _ProductsOverViewState extends State<ProductsOverView> {
           )
         ],
       ),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: ListView(
           shrinkWrap: true,

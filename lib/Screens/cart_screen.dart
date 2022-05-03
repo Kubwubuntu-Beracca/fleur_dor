@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:fleur_d_or/providers/cart.dart';
+import 'package:fleur_d_or/providers/orders.dart';
 import 'package:fleur_d_or/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,13 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: Colors.black38,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                        cart.items.values.toList(),
+                        cart.totalAmount,
+                      );
+                      cart.clearCart();
+                    },
                     child: const Text(
                       'ORDER NOW',
                       style: TextStyle(
