@@ -28,6 +28,14 @@ class ProductDetailScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+      body: Container(
+        height: 300,
+        width: double.infinity,
+        child: Image.network(
+          loadedProducts.imageUrl!,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }

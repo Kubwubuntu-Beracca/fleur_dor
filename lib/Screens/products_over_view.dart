@@ -1,9 +1,12 @@
-// ignore_for_file: use_key_in_widget_constructors, must_be_immutable, sized_box_for_whitespace
+// ignore_for_file: use_key_in_widget_constructors, must_be_immutable, sized_box_for_whitespace, constant_identifier_names
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fleur_d_or/Screens/cart_screen.dart';
 import 'package:fleur_d_or/data/url_silde_images.dart';
+import 'package:fleur_d_or/providers/cart.dart';
+import 'package:fleur_d_or/widgets/badge.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import '../data/categories.dart';
 import '../widgets/category_widget.dart';
 import '../widgets/products_grid.dart';
@@ -70,12 +73,15 @@ class _ProductsOverViewState extends State<ProductsOverView> {
                       value: FiltersOptions.All,
                     ),
                   ]),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.shopping_bag_outlined,
-              color: Colors.black,
-            ),
+          Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(CartScreen.routeName);
+                    },
+                    icon: const Icon(Icons.shopping_bag_outlined)),
+                value: cart.itemCount.toString(),
+                color: Colors.red),
           )
         ],
       ),

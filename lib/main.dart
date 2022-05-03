@@ -1,5 +1,7 @@
+import 'package:fleur_d_or/Screens/cart_screen.dart';
 import 'package:fleur_d_or/Screens/display_by_category.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
+import 'package:fleur_d_or/providers/cart.dart';
 import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +17,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => ProductsProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => ProductsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Cart(),
+        )
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -28,6 +37,7 @@ class MyApp extends StatelessWidget {
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           DisplayByCategory.routeName: (ctx) => DisplayByCategory(),
+          CartScreen.routeName: (ctx) => CartScreen()
         },
       ),
     );

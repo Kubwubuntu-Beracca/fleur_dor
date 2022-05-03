@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:fleur_d_or/providers/cart.dart';
 import 'package:fleur_d_or/providers/product.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class ItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<Cart>(context, listen: false);
     return Stack(
       children: <Widget>[
         ClipRRect(
@@ -26,18 +28,20 @@ class ItemWidget extends StatelessWidget {
             ),
             footer: GridTileBar(
               backgroundColor: Colors.white,
-              leading: FittedBox(
-                child: Text(
-                  '${product.price!} Fbu',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
+              leading: Text(
+                '${product.price!} Fbu',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
                 ),
               ),
+              title: const Text(''),
               trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  cart.addItem(product.id, int.parse(product.price!),
+                      product.title, product.imageUrl);
+                },
                 icon: const Icon(
                   Icons.shopping_bag_outlined,
                   color: Colors.black,
