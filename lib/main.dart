@@ -2,6 +2,7 @@ import 'package:fleur_d_or/Screens/cart_screen.dart';
 import 'package:fleur_d_or/Screens/display_by_category.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
 import 'package:fleur_d_or/providers/cart.dart';
+import 'package:fleur_d_or/providers/product.dart';
 import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
-        )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

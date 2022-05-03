@@ -1,4 +1,4 @@
-// ignore_for_file: unrelated_type_equality_checks, use_key_in_widget_constructors
+// ignore_for_file: unrelated_type_equality_checks, use_key_in_widget_constructors, sized_box_for_whitespace, prefer_const_constructors
 
 import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:flutter/material.dart';
@@ -28,14 +28,72 @@ class ProductDetailScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        height: 300,
-        width: double.infinity,
-        child: Image.network(
-          loadedProducts.imageUrl!,
-          fit: BoxFit.cover,
+      body: Column(children: <Widget>[
+        Container(
+          height: 600,
+          width: double.infinity,
+          child: GridTile(
+            child: Image.network(
+              loadedProducts.imageUrl!,
+              fit: BoxFit.cover,
+            ),
+            footer: GridTileBar(
+              backgroundColor: Colors.white,
+              subtitle: Text(
+                '${loadedProducts.description}',
+                style: TextStyle(color: Colors.black45),
+              ),
+              title: Text('${loadedProducts.price}',
+                  style: TextStyle(color: Colors.black)),
+              trailing: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.share_outlined,
+                    color: Colors.black,
+                    size: 25,
+                  )),
+            ),
+          ),
         ),
-      ),
+        Divider(
+          thickness: 1,
+        ),
+        Expanded(
+          child: Row(
+            children: <Widget>[
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.favorite_border,
+                  color: Colors.black,
+                  size: 30,
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(
+                    right: 10,
+                    bottom: 5,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black,
+                    ),
+                    child: Text(
+                      'ADD TO BAG',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]),
     );
   }
 }
