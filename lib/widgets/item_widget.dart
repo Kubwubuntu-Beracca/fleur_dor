@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:fleur_d_or/providers/cart.dart';
 import 'package:fleur_d_or/providers/product.dart';
@@ -41,6 +41,23 @@ class ItemWidget extends StatelessWidget {
                 onPressed: () {
                   cart.addItem(product.id, int.parse(product.price!),
                       product.title, product.imageUrl);
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text(
+                        'Added to bag',
+                        textAlign: TextAlign.center,
+                      ),
+                      duration: const Duration(seconds: 3),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        textColor: Colors.amber,
+                        onPressed: () {
+                          cart.removeSingleItem(product.id);
+                        },
+                      ),
+                    ),
+                  );
                 },
                 icon: const Icon(
                   Icons.shopping_bag_outlined,

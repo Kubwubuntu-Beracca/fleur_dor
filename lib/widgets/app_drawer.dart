@@ -1,6 +1,8 @@
 import 'package:fleur_d_or/Screens/orders_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../Screens/company_products_screen.dart';
+
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
 
@@ -10,7 +12,7 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
-            backgroundColor: Colors.black,
+            backgroundColor: Theme.of(context).primaryColor,
             title: const Text('Hello Friend'),
             automaticallyImplyLeading: false, //never add a back button
           ),
@@ -29,7 +31,16 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);
             },
-          )
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.edit),
+            title: const Text('Manage Products'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(CompanyProductsScreen.routeName);
+            },
+          ),
         ],
       ),
     );

@@ -83,9 +83,7 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                     child: Text(
                       'ADD TO BAG',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ),

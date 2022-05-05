@@ -1,5 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:fleur_d_or/Screens/cart_screen.dart';
+import 'package:fleur_d_or/Screens/company_products_screen.dart';
 import 'package:fleur_d_or/Screens/display_by_category.dart';
+import 'package:fleur_d_or/Screens/edit_product_screen.dart';
 import 'package:fleur_d_or/Screens/orders_screen.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
 import 'package:fleur_d_or/providers/cart.dart';
@@ -36,15 +40,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          primaryColor: Colors.white,
-          fontFamily: 'Roboto',
-        ),
+            primarySwatch: Colors.grey,
+            primaryColor: Colors.white,
+            accentColor: Colors.black,
+            fontFamily: 'Roboto',
+            iconTheme: const IconThemeData(color: Colors.black)),
         home: ProductsOverView(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           DisplayByCategory.routeName: (ctx) => DisplayByCategory(),
           CartScreen.routeName: (ctx) => CartScreen(),
           OrderScreen.routeName: (ctx) => OrderScreen(),
+          CompanyProductsScreen.routeName: (ctx) => CompanyProductsScreen(),
+          EditProductScreen.routeName: (ctx) => EditProductScreen(),
         },
       ),
     );
