@@ -11,6 +11,12 @@ import 'package:provider/provider.dart';
 
 class CompanyProductsScreen extends StatelessWidget {
   static const routeName = '/company-products';
+
+  Future<void> _refreshProducts(BuildContext ctx) async {
+    await Provider.of<ProductsProvider>(ctx, listen: false)
+        .fetchAndSetProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<ProductsProvider>(context);
@@ -33,18 +39,21 @@ class CompanyProductsScreen extends StatelessWidget {
         ],
       ),
       drawer: const AppDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListView.builder(
-            itemCount: productsData.items.length,
-            itemBuilder: (_, i) => Column(children: [
-                  CompProdItem(
-                    productsData.items[i].id,
-                    productsData.items[i].title,
-                    productsData.items[i].imageUrl,
-                  ),
-                  const Divider(),
-                ])),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshProducts(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ListView.builder(
+              itemCount: productsData.items.length,
+              itemBuilder: (_, i) => Column(children: [
+                    CompProdItem(
+                      productsData.items[i].id,
+                      productsData.items[i].title,
+                      productsData.items[i].imageUrl,
+                    ),
+                    const Divider(),
+                  ])),
+        ),
       ),
     );
   }

@@ -17,6 +17,7 @@ class CompProdItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
     return ListTile(
         title: Text(title!),
         leading: CircleAvatar(
@@ -39,9 +40,19 @@ class CompProdItem extends StatelessWidget {
                   Icons.delete,
                   color: Theme.of(context).errorColor,
                 ),
-                onPressed: () {
-                  Provider.of<ProductsProvider>(context, listen: false)
-                      .deleteProduct(id);
+                onPressed: () async {
+                  try {
+                    await Provider.of<ProductsProvider>(context, listen: false)
+                        .deleteProduct(id);
+                  } catch (error) {
+                    //of context can't wait run after the build has already run
+                    //because dart is not sure if the context still refer to the same widget
+                    scaffold.showSnackBar(
+                      const SnackBar(
+                        content: Text('Deleting failed'),
+                      ),
+                    );
+                  }
                 },
               ),
             ],

@@ -1,64 +1,69 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, avoid_print
+
+import 'dart:convert';
+
+import 'package:fleur_d_or/models/http_exception.dart';
 
 import './product.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ProductsProvider with ChangeNotifier {
   List<Product> _items = [
-    Product(
-      id: 'p1',
-      title: 'Bouquet Rose',
-      description: 'Blooming blossoming',
-      price: '100000',
-      category: 'Anniversary',
-      imageUrl:
-          'https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-    ),
-    Product(
-      id: 'p2',
-      title: 'Amagaba',
-      description: 'Flowering',
-      price: '20000',
-      category: 'Dot',
-      imageUrl:
-          'https://images.unsplash.com/photo-1529636798458-92182e662485?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80',
-    ),
-    Product(
-      id: 'p3',
-      title: 'Icuhiro',
-      description: 'flourishing',
-      price: '30000',
-      category: 'Mariage',
-      imageUrl:
-          'https://images.unsplash.com/photo-1576161954389-69cb769e0eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80',
-    ),
-    Product(
-      id: 'p4',
-      title: 'Centre-Face',
-      description: 'thriving',
-      price: '30000',
-      category: 'Anniversary',
-      imageUrl:
-          'https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-    ),
-    Product(
-      id: 'p5',
-      title: 'Simbimanga',
-      description: 'Thriving in vigor',
-      price: '40000',
-      category: 'Dot',
-      imageUrl:
-          'https://images.unsplash.com/photo-1529636798458-92182e662485?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80',
-    ),
-    Product(
-      id: 'p6',
-      title: 'table d honneur',
-      description: 'health and beauty',
-      price: '10000',
-      category: 'Mariage',
-      imageUrl:
-          'https://images.unsplash.com/photo-1576161954389-69cb769e0eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80',
-    )
+    // Product(
+    //   id: 'p1',
+    //   title: 'Bouquet Rose',
+    //   description: 'Blooming blossoming',
+    //   price: '100000',
+    //   category: 'Anniversary',
+    //   imageUrl:
+    //       'https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+    // ),
+    // Product(
+    //   id: 'p2',
+    //   title: 'Amagaba',
+    //   description: 'Flowering',
+    //   price: '20000',
+    //   category: 'Dot',
+    //   imageUrl:
+    //       'https://images.unsplash.com/photo-1529636798458-92182e662485?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80',
+    // ),
+    // Product(
+    //   id: 'p3',
+    //   title: 'Icuhiro',
+    //   description: 'flourishing',
+    //   price: '30000',
+    //   category: 'Mariage',
+    //   imageUrl:
+    //       'https://images.unsplash.com/photo-1576161954389-69cb769e0eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80',
+    // ),
+    // Product(
+    //   id: 'p4',
+    //   title: 'Centre-Face',
+    //   description: 'thriving',
+    //   price: '30000',
+    //   category: 'Anniversary',
+    //   imageUrl:
+    //       'https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+    // ),
+    // Product(
+    //   id: 'p5',
+    //   title: 'Simbimanga',
+    //   description: 'Thriving in vigor',
+    //   price: '40000',
+    //   category: 'Dot',
+    //   imageUrl:
+    //       'https://images.unsplash.com/photo-1529636798458-92182e662485?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80',
+    // ),
+    // Product(
+    //   id: 'p6',
+    //   title: 'table d honneur',
+    //   description: 'health and beauty',
+    //   price: '10000',
+    //   category: 'Mariage',
+    //   imageUrl:
+    //       'https://images.unsplash.com/photo-1576161954389-69cb769e0eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80',
+    // )
   ];
 
   List<Product> get items {
@@ -79,30 +84,108 @@ class ProductsProvider with ChangeNotifier {
     }).toList();
   }
 
-  void addProduct(Product product) {
-    final newProduct = Product(
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      category: product.category,
-      id: DateTime.now().toString(),
-    );
-    _items.add(newProduct);
-    // _items.insert(0, newProduct); at the start of the list
-    notifyListeners();
+  Future<void> fetchAndSetProducts() async {
+    const url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json';
+    try {
+      final response = await http.get(Uri.parse(url));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      List<Product> loadedData = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedData.add(
+          Product(
+            id: prodId,
+            title: prodData['title'],
+            description: prodData['description'],
+            price: prodData['price'],
+            category: prodData['category'],
+            imageUrl: prodData['imageUrl'],
+            isFavorite: prodData['isFavorite'],
+          ),
+        );
+      });
+      _items = loadedData;
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> addProduct(Product product) async {
+    const url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode(
+          {
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'category': product.category,
+            'imageUrl': product.imageUrl,
+            'isFavorite': product.isFavorite,
+          },
+        ),
+      );
+      print(json.decode(response.body));
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        category: product.category,
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newProduct);
+      // _items.insert(0, newProduct); at the start of the list
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+  Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      _items[prodIndex] = newProduct;
-      notifyListeners();
+      try {
+        final url =
+            'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json';
+        await http.patch(
+          Uri.parse(url),
+          body: json.encode({
+            'title': newProduct.title,
+            'price': newProduct.price,
+            'category': newProduct.category,
+            'description': newProduct.description,
+            'imageUrl': newProduct.imageUrl,
+          }),
+        );
+        _items[prodIndex] = newProduct;
+        notifyListeners();
+      } catch (error) {
+        rethrow;
+      }
     } else {}
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProduct(String id) async {
+    final url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json';
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    Product? existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    final response = await http.delete(Uri.parse(url));
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product');
+    }
+    existingProduct = null;
+
+    // _items.removeWhere((prod) => prod.id == id);
   }
 }

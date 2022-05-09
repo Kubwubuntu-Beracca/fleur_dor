@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable, sized_box_for_whitespace, constant_identifier_names
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,26 @@ class ProductsOverView extends StatefulWidget {
 
 class _ProductsOverViewState extends State<ProductsOverView> {
   var _showOnlyFavorites = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,92 +98,99 @@ class _ProductsOverViewState extends State<ProductsOverView> {
         ],
       ),
       drawer: const AppDrawer(),
-      body: SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          physics: const ScrollPhysics(),
-          children: <Widget>[
-            Column(children: <Widget>[
-              Visibility(
-                visible: _showOnlyFavorites ? false : true,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      children: CATEGORIES
-                          .map((catData) => CategoryWidget(
-                                image: catData.image,
-                                name: catData.name,
-                                id: catData.id,
-                              ))
-                          .toList()),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Visibility(
-                visible: _showOnlyFavorites ? false : true,
-                child: Container(
-                  height: 200,
-                  margin: const EdgeInsets.only(top: 20, bottom: 20),
-                  child: CarouselSlider.builder(
-                      itemCount: SlidesImagesUrl.urlImages.length,
-                      itemBuilder: (BuildContext context, index, realIndex) {
-                        final urlImage = SlidesImagesUrl.urlImages[index];
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Image.network(
-                              urlImage,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        );
-                      },
-                      options: CarouselOptions(
-                        height: 400,
-                        aspectRatio: 16 / 9,
-                        autoPlay: true,
-                        initialPage: 0,
-                        enlargeCenterPage: true,
-                      )),
-                ),
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 3),
-                  color:
-                      const Color.fromARGB(255, 243, 242, 242).withOpacity(0.5),
-                  height: 30,
-                  width: 200,
-                  child: const Text(
-                    'Boutique',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Roboto',
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
+              child: ListView(
+                shrinkWrap: true,
+                physics: const ScrollPhysics(),
+                children: <Widget>[
+                  Column(children: <Widget>[
+                    Visibility(
+                      visible: _showOnlyFavorites ? false : true,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                            children: CATEGORIES
+                                .map((catData) => CategoryWidget(
+                                      image: catData.image,
+                                      name: catData.name,
+                                      id: catData.id,
+                                    ))
+                                .toList()),
+                      ),
                     ),
-                  ),
-                ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Visibility(
+                      visible: _showOnlyFavorites ? false : true,
+                      child: Container(
+                        height: 200,
+                        margin: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: CarouselSlider.builder(
+                            itemCount: SlidesImagesUrl.urlImages.length,
+                            itemBuilder:
+                                (BuildContext context, index, realIndex) {
+                              final urlImage = SlidesImagesUrl.urlImages[index];
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(15.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Image.network(
+                                    urlImage,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                            options: CarouselOptions(
+                              height: 400,
+                              aspectRatio: 16 / 9,
+                              autoPlay: true,
+                              initialPage: 0,
+                              enlargeCenterPage: true,
+                            )),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 3),
+                        color: const Color.fromARGB(255, 243, 242, 242)
+                            .withOpacity(0.5),
+                        height: 30,
+                        width: 200,
+                        child: const Text(
+                          'Boutique',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Roboto',
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                        colors: [
+                          const Color.fromARGB(255, 243, 242, 242)
+                              .withOpacity(0.5),
+                          const Color.fromARGB(255, 243, 242, 242)
+                              .withOpacity(0.5),
+                        ],
+                      )),
+                      //color: Color.fromARGB(255, 243, 242, 242),
+                      child: ProductsGrid(_showOnlyFavorites),
+                    ),
+                  ]),
+                ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    const Color.fromARGB(255, 243, 242, 242).withOpacity(0.5),
-                    const Color.fromARGB(255, 243, 242, 242).withOpacity(0.5),
-                  ],
-                )),
-                //color: Color.fromARGB(255, 243, 242, 242),
-                child: ProductsGrid(_showOnlyFavorites),
-              ),
-            ]),
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
