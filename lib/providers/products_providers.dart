@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, avoid_print
+// ignore_for_file: prefer_final_fields, avoid_print, unnecessary_null_comparison
 
 import 'dart:convert';
 
@@ -67,7 +67,8 @@ class ProductsProvider with ChangeNotifier {
   ];
 
   final String? authToken;
-  ProductsProvider(this.authToken, this._items);
+  final String? userId;
+  ProductsProvider(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -88,11 +89,20 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    final url =
+    var url =
         'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      url =
+          'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken';
+
+      final favoriteResponse = await http.get(Uri.parse(url));
+      print(favoriteResponse.body);
+      final favoriteData = json.decode(favoriteResponse.body);
       List<Product> loadedData = [];
       extractedData.forEach((prodId, prodData) {
         loadedData.add(
@@ -103,7 +113,8 @@ class ProductsProvider with ChangeNotifier {
             price: prodData['price'],
             category: prodData['category'],
             imageUrl: prodData['imageUrl'],
-            isFavorite: prodData['isFavorite'],
+            isFavorite:
+                favoriteData == null ? false : favoriteData[prodId] ?? false,
           ),
         );
       });
@@ -128,7 +139,6 @@ class ProductsProvider with ChangeNotifier {
             'price': product.price,
             'category': product.category,
             'imageUrl': product.imageUrl,
-            'isFavorite': product.isFavorite,
           },
         ),
       );
