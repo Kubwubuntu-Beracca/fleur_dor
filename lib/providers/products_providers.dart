@@ -66,6 +66,9 @@ class ProductsProvider with ChangeNotifier {
     // )
   ];
 
+  final String? authToken;
+  ProductsProvider(this.authToken, this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -85,8 +88,8 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url =
-        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json';
+    final url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -112,8 +115,8 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url =
-        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json';
+    final url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken';
 
     try {
       final response = await http.post(
@@ -152,7 +155,7 @@ class ProductsProvider with ChangeNotifier {
     if (prodIndex >= 0) {
       try {
         final url =
-            'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json';
+            'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json?auth=$authToken';
         await http.patch(
           Uri.parse(url),
           body: json.encode({

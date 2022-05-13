@@ -25,13 +25,13 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String? token) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     try {
       final url =
-          'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json';
+          'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json?auth=$token';
       final response = await http.patch(Uri.parse(url),
           body: json.encode({'isFavorite': isFavorite}));
       if (response.statusCode >= 400) {

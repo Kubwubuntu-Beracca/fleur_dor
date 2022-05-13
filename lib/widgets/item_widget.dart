@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
+import 'package:fleur_d_or/providers/auth.dart';
 import 'package:fleur_d_or/providers/cart.dart';
 import 'package:fleur_d_or/providers/product.dart';
 import 'package:fleur_d_or/Screens/product_details_screen.dart';
@@ -11,6 +12,7 @@ class ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     return Stack(
       children: <Widget>[
         ClipRRect(
@@ -84,7 +86,7 @@ class ItemWidget extends StatelessWidget {
               //product is the value representing Product data
               builder: (ctx, product, child) => IconButton(
                 onPressed: () {
-                  product.toggleFavoriteStatus();
+                  product.toggleFavoriteStatus(authData.token);
                 },
                 icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border,

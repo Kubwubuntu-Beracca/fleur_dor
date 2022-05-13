@@ -21,14 +21,15 @@ class OrderItem {
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
-
+  final String? authToken;
+  Orders(this.authToken, this._orders);
   List<OrderItem> get orders {
     return [..._orders];
   }
 
   Future<void> fetchAndSetOrders() async {
-    const url =
-        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/orders.json';
+    final url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/orders.json?auth=$authToken';
     final response = await http.get(Uri.parse(url));
     print(response.body);
 
@@ -62,8 +63,8 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProducts, int total) async {
     final timeStamp = DateTime.now();
-    const url =
-        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/orders.json';
+    final url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/orders.json?auth=$authToken';
 
     try {
       final response = await http.post(

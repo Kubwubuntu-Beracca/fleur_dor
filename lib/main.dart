@@ -1,15 +1,17 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unnecessary_null_comparison
 
-import 'package:fleur_d_or/Screens/cart_screen.dart';
-import 'package:fleur_d_or/Screens/company_products_screen.dart';
-import 'package:fleur_d_or/Screens/display_by_category.dart';
-import 'package:fleur_d_or/Screens/edit_product_screen.dart';
-import 'package:fleur_d_or/Screens/orders_screen.dart';
-import 'package:fleur_d_or/Screens/product_details_screen.dart';
-import 'package:fleur_d_or/providers/cart.dart';
-import 'package:fleur_d_or/providers/orders.dart';
-import 'package:fleur_d_or/providers/product.dart';
-import 'package:fleur_d_or/providers/products_providers.dart';
+import '../providers/auth.dart';
+import '../Screens/auth_screen.dart';
+import '../Screens/cart_screen.dart';
+import '../Screens/company_products_screen.dart';
+import '../Screens/display_by_category.dart';
+import '../Screens/edit_product_screen.dart';
+import '../Screens/orders_screen.dart';
+import '../Screens/product_details_screen.dart';
+import '../providers/cart.dart';
+import '../providers/orders.dart';
+import '../providers/product.dart';
+import '../providers/products_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Screens/products_over_view.dart';
@@ -25,36 +27,47 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => ProductsProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (ctx) => Cart(),
-        ),
-        ChangeNotifierProvider(
-          create: (ctx) => Orders(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-            primarySwatch: Colors.amber,
-            primaryColor: Colors.white,
-            accentColor: Colors.black,
-            fontFamily: 'Roboto',
-            iconTheme: const IconThemeData(color: Colors.black)),
-        home: ProductsOverView(),
-        routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-          DisplayByCategory.routeName: (ctx) => DisplayByCategory(),
-          CartScreen.routeName: (ctx) => CartScreen(),
-          OrderScreen.routeName: (ctx) => OrderScreen(),
-          CompanyProductsScreen.routeName: (ctx) => CompanyProductsScreen(),
-          EditProductScreen.routeName: (ctx) => EditProductScreen(),
-        },
-      ),
-    );
+        providers: [
+          ChangeNotifierProvider(create: (ctx) => Auth()),
+          ChangeNotifierProxyProvider<Auth, ProductsProvider>(
+            create: (_) => ProductsProvider(null, []),
+            update: (ctx, auth, previousProducts) => ProductsProvider(
+                auth.token,
+                previousProducts!.items == null ? [] : previousProducts.items),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => Cart(),
+          ),
+          ChangeNotifierProxyProvider<Auth, Orders>(
+            create: (_) => Orders(null, []),
+            update: (ctx, auth, previousProducts) => Orders(
+                auth.token,
+                previousProducts!.orders == null
+                    ? []
+                    : previousProducts.orders),
+          ),
+        ],
+        child: Consumer<Auth>(
+          builder: (ctx, auth, _) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.amber,
+              primaryColor: Colors.white,
+              accentColor: Colors.black,
+              fontFamily: 'Roboto',
+              iconTheme: const IconThemeData(color: Colors.black),
+            ),
+            home: auth.isAuth ? ProductsOverView() : AuthScreen(),
+            routes: {
+              ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+              DisplayByCategory.routeName: (ctx) => DisplayByCategory(),
+              CartScreen.routeName: (ctx) => CartScreen(),
+              OrderScreen.routeName: (ctx) => OrderScreen(),
+              CompanyProductsScreen.routeName: (ctx) => CompanyProductsScreen(),
+              EditProductScreen.routeName: (ctx) => EditProductScreen(),
+            },
+          ),
+        ));
   }
 }
