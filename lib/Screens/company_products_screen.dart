@@ -38,7 +38,7 @@ class CompanyProductsScreen extends StatelessWidget {
           )
         ],
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
       body: RefreshIndicator(
         onRefresh: () => _refreshProducts(context),
         child: Padding(

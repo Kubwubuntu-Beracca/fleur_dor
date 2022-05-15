@@ -68,6 +68,7 @@ class ProductsProvider with ChangeNotifier {
 
   final String? authToken;
   final String? userId;
+  var _code = '';
   ProductsProvider(this.authToken, this.userId, this._items);
 
   List<Product> get items {
@@ -123,6 +124,36 @@ class ProductsProvider with ChangeNotifier {
     } catch (error) {
       rethrow;
     }
+  }
+
+  Future<void> secretCode(String? code) async {
+    final url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/secret.json?auth=$authToken';
+    try {
+      final response =
+          await http.post(Uri.parse(url), body: (json.encode({'code': code})));
+      print(response.body);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> getCode() async {
+    final url =
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/secret.json?auth=$authToken';
+    try {
+      final response = await http.get(Uri.parse(url));
+      print(response.body);
+      final responseData = json.decode(response.body);
+      _code = responseData['code'];
+      print(_code);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  String? get code {
+    return _code;
   }
 
   Future<void> addProduct(Product product) async {

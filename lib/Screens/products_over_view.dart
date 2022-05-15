@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, must_be_immutable, sized_box_for_whitespace, constant_identifier_names
+// ignore_for_file: use_key_in_widget_constructors, must_be_immutable, sized_box_for_whitespace, constant_identifier_names, avoid_print
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fleur_d_or/providers/products_providers.dart';
@@ -37,6 +37,9 @@ class _ProductsOverViewState extends State<ProductsOverView> {
       });
 
       Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((_) {
+        final secCode =
+            Provider.of<ProductsProvider>(context, listen: false).code;
+        print(secCode);
         setState(() {
           _isLoading = false;
         });
@@ -97,7 +100,7 @@ class _ProductsOverViewState extends State<ProductsOverView> {
           )
         ],
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),

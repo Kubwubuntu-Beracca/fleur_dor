@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use, unnecessary_null_comparison
 
+import 'package:fleur_d_or/Screens/splash_screen.dart';
+
 import '../providers/auth.dart';
 import '../Screens/auth_screen.dart';
 import '../Screens/cart_screen.dart';
@@ -40,9 +42,10 @@ class MyApp extends StatelessWidget {
             create: (ctx) => Cart(),
           ),
           ChangeNotifierProxyProvider<Auth, Orders>(
-            create: (_) => Orders(null, []),
+            create: (_) => Orders(null, null, []),
             update: (ctx, auth, previousProducts) => Orders(
                 auth.token,
+                auth.userId,
                 previousProducts!.orders == null
                     ? []
                     : previousProducts.orders),
@@ -59,7 +62,16 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Roboto',
               iconTheme: const IconThemeData(color: Colors.black),
             ),
-            home: auth.isAuth ? ProductsOverView() : AuthScreen(),
+            home: auth.isAuth
+                ? ProductsOverView()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (ctx, autoLoginResultSnapShot) =>
+                        autoLoginResultSnapShot.connectionState ==
+                                ConnectionState.waiting
+                            ? SplashScreen()
+                            : AuthScreen(),
+                  ),
             routes: {
               ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
               DisplayByCategory.routeName: (ctx) => DisplayByCategory(),

@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, deprecated_member_use
+// ignore_for_file: use_key_in_widget_constructors, deprecated_member_use, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class OrderScreen extends StatelessWidget {
         iconTheme: Theme.of(context).iconTheme,
         centerTitle: true,
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
       body: FutureBuilder(
         future: Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
         builder: (ctx, datasnapShot) {
@@ -48,7 +48,13 @@ class OrderScreen extends StatelessWidget {
           } else {
             if (datasnapShot.error != null) {
               return const Center(
-                child: Text('An error occured'),
+                child: Text(
+                  'An error occured',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.amber,
+                  ),
+                ),
               );
             } else {
               return Consumer<Orders>(
