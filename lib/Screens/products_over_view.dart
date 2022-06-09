@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fleur_d_or/providers/products_providers.dart';
+import 'package:fleur_d_or/widgets/cat_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,7 @@ import '../providers/cart.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/badge.dart';
 import '../data/categories.dart';
-import '../widgets/category_widget.dart';
+import '../widgets/category_item.dart';
 import '../widgets/products_grid.dart';
 
 enum FiltersOptions {
@@ -190,6 +191,7 @@ class _ProductsOverViewState extends State<ProductsOverView> {
                       //color: Color.fromARGB(255, 243, 242, 242),
                       child: ProductsGrid(_showOnlyFavorites),
                     ),
+                    const CategoryItem()
                   ]),
                 ],
               ),

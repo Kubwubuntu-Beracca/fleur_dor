@@ -3,7 +3,7 @@
 import 'package:fleur_d_or/Screens/edit_product_screen.dart';
 
 import '../widgets/app_drawer.dart';
-import '../widgets/company_product_item.dart';
+import '../widgets/products_item.dart';
 import '../providers/products_providers.dart';
 
 import 'package:flutter/material.dart';
