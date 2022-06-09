@@ -12,7 +12,6 @@ import '../Screens/orders_screen.dart';
 import '../Screens/product_details_screen.dart';
 import '../providers/cart.dart';
 import '../providers/orders.dart';
-import '../providers/product.dart';
 import '../providers/products_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

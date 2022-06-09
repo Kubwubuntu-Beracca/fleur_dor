@@ -89,9 +89,11 @@ class ProductsProvider with ChangeNotifier {
     }).toList();
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : "";
     var url =
-        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken';
+        'https://goldenflower-a6046-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -170,6 +172,7 @@ class ProductsProvider with ChangeNotifier {
             'price': product.price,
             'category': product.category,
             'imageUrl': product.imageUrl,
+            'creatorId': userId
           },
         ),
       );
