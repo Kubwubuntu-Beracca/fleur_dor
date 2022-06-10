@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable, sized_box_for_whitespace, constant_identifier_names, avoid_print
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fleur_d_or/models/variables.dart';
 import 'package:fleur_d_or/providers/products_providers.dart';
 import 'package:fleur_d_or/widgets/cat_item.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,6 @@ class _ProductsOverViewState extends State<ProductsOverView> {
   var _showOnlyFavorites = false;
   var _isInit = true;
   var _isLoading = false;
-
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -52,55 +52,57 @@ class _ProductsOverViewState extends State<ProductsOverView> {
 
   @override
   Widget build(BuildContext context) {
+    final PreferredSizeWidget? appB = AppBar(
+      backgroundColor: Colors.white,
+      iconTheme: const IconThemeData(color: Colors.black),
+      title: const Text(
+        'Fleur Dor',
+        style: TextStyle(color: Colors.black),
+      ),
+      centerTitle: true,
+      actions: <Widget>[
+        PopupMenuButton(
+            onSelected: (FiltersOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FiltersOptions.Favorites) {
+                  _showOnlyFavorites = true;
+                } else {
+                  _showOnlyFavorites = false;
+                }
+              });
+            },
+            itemBuilder: (_) => [
+                  const PopupMenuItem(
+                    child: Text(
+                      'Only Favorites',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    value: FiltersOptions.Favorites,
+                  ),
+                  const PopupMenuItem(
+                    child: Text(
+                      'Show All',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    value: FiltersOptions.All,
+                  ),
+                ]),
+        Consumer<Cart>(
+          builder: (_, cart, ch) => Badge(
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  },
+                  icon: const Icon(Icons.shopping_bag_outlined)),
+              value: cart.itemCount.toString(),
+              color: Colors.red),
+        )
+      ],
+    );
+    Variables.appBar = appB;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          'Fleur Dor',
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          PopupMenuButton(
-              onSelected: (FiltersOptions selectedValue) {
-                setState(() {
-                  if (selectedValue == FiltersOptions.Favorites) {
-                    _showOnlyFavorites = true;
-                  } else {
-                    _showOnlyFavorites = false;
-                  }
-                });
-              },
-              itemBuilder: (_) => [
-                    const PopupMenuItem(
-                      child: Text(
-                        'Only Favorites',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      value: FiltersOptions.Favorites,
-                    ),
-                    const PopupMenuItem(
-                      child: Text(
-                        'Show All',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      value: FiltersOptions.All,
-                    ),
-                  ]),
-          Consumer<Cart>(
-            builder: (_, cart, ch) => Badge(
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(CartScreen.routeName);
-                    },
-                    icon: const Icon(Icons.shopping_bag_outlined)),
-                value: cart.itemCount.toString(),
-                color: Colors.red),
-          )
-        ],
-      ),
+      appBar: appB,
       drawer: AppDrawer(),
       body: _isLoading
           ? const Center(
@@ -191,7 +193,7 @@ class _ProductsOverViewState extends State<ProductsOverView> {
                       //color: Color.fromARGB(255, 243, 242, 242),
                       child: ProductsGrid(_showOnlyFavorites),
                     ),
-                    const CategoryItem()
+                    //const CategoryItem()
                   ]),
                 ],
               ),

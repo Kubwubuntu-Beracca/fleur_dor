@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:fleur_d_or/Screens/category_screen.dart';
 import 'package:fleur_d_or/Screens/display_by_category.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +29,10 @@ class CategoryWidget extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             child: GestureDetector(
               onTap: () {
+                // Navigator.of(context)
+                //     .pushNamed(DisplayByCategory.routeName, arguments: name);
                 Navigator.of(context)
-                    .pushNamed(DisplayByCategory.routeName, arguments: name);
+                    .pushNamed(CategoryScreen.routeName, arguments: name);
               },
               child: Image.asset(
                 image!,

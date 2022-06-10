@@ -1,12 +1,13 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, use_key_in_widget_constructors
 
+import 'package:fleur_d_or/providers/product.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context, listen: false);
     return Card(
       elevation: 5,
       child: Row(
@@ -15,8 +16,8 @@ class CategoryItem extends StatelessWidget {
             height: 182,
             width: 130,
             padding: const EdgeInsets.all(5.0),
-            child: Image.asset(
-              'assets/images/aniversary.webp',
+            child: Image.network(
+              product.imageUrl!,
               fit: BoxFit.cover,
             ),
           ),
@@ -28,17 +29,17 @@ class CategoryItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    const Text(
-                      '500Fbu',
-                      style: TextStyle(
+                    Text(
+                      product.price!,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
 
-                    const Text(
-                      'Happy Birthday',
-                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    Text(
+                      product.description!,
+                      style: const TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     const SizedBox(
                       height: 5,
@@ -51,9 +52,11 @@ class CategoryItem extends StatelessWidget {
                         ),
                         child: IconButton(
                           onPressed: () {},
-                          icon: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.white,
+                          icon: Icon(
+                            product.isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Colors.amber,
                           ),
                         )),
                     //const SizedBox(height: 10),

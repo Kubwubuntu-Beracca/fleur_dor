@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use, unnecessary_null_comparison
 
+import 'package:fleur_d_or/Screens/category_screen.dart';
 import 'package:fleur_d_or/Screens/splash_screen.dart';
+import 'package:fleur_d_or/widgets/cat_item.dart';
 
 import '../providers/auth.dart';
 import '../Screens/auth_screen.dart';
@@ -74,6 +76,7 @@ class MyApp extends StatelessWidget {
             routes: {
               ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
               DisplayByCategory.routeName: (ctx) => DisplayByCategory(),
+              CategoryScreen.routeName: (ctx) => const CategoryScreen(),
               CartScreen.routeName: (ctx) => CartScreen(),
               OrderScreen.routeName: (ctx) => OrderScreen(),
               CompanyProductsScreen.routeName: (ctx) => CompanyProductsScreen(),
